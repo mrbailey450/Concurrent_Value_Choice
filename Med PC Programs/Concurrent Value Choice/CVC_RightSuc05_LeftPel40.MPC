@@ -1,0 +1,709 @@
+\========= Concurrent Value CHoice Experiment ============================================
+\ Program Name: COncurrent Value CHoice: LeftPellet01 - RightSucrose01_10Forced_30Choice
+\  C O M M E N T S
+\
+\ Concurrent Value Choice_Sucrose vs Pellets: with 10 Forced choice trials at start  
+\ 
+\ session ends after 40 trials or 60'
+\ Original Author: Matt Bailey 10_15_2014
+
+\only save W, P variable to data file*******
+DISKFORMAT = 13
+DISKVARS = W    \"DISKVARS" only prints selected variables to datafile
+DISK COLUMNS = 1
+
+
+
+
+                  \  Inputs ****************************
+^headIN = 3       \  IR head entry detector
+^headOUT = 4      \ IR head exit detector
+^LLever2 = 1      \  left lever press
+^RLever2 = 2      \  right lever press
+
+             
+                  \  Outputs ****************************
+^leftlever = 1
+^rightlever = 2
+^fan = 12         \ Fans for Box ventilation  
+^dipper = 3       \ On Liquid Dipper
+^feederlight = 8  \ Light in the Head Entry Hole; Signal being used in this exp.
+^house = 7        \ houselight
+^Pellet = 14      \ Turns pellet dispenser on
+
+
+    \CONSTANTS***********************
+^DipDuration = 5    \dipper up duration (sec)
+
+
+\===========================================================================================================
+\= List of all the variables which are used in this program=================================================
+
+
+\  VARIABLES USED IN THIS PROGRAM
+\   *(a) = For Lever Summation - press vs no press
+\   *b = For Lever Summation -  old vs new press
+\   c = Indicating left or right press
+\   d = number of forced trials
+\   e = Number of Pellet Choices
+\   *f = time elapsed in the ITI
+\   *g = random lever to be used (On"g")
+\   *h = list of levers to be drawn from
+\   *i = Left lever press count
+\   *j = total number of trials
+\   k = Right Lever Ratio
+\   l = Number of Sucrose Choices
+\   m = number of presses on the left lever
+\   n = number of presses on the right lever
+\   o = number of OptOuts
+\   *p = trial time counter
+\   q
+\   *r = Display timer
+\   *(s) = lever record
+\   *t = Master Matlab timer
+\   *(u) = ITI duration list
+\   *v =  
+\   *(w) = time and event code for matlab
+\   *x = current ITI duration, selected from list u
+\   *y = Left Lever Ratio
+\   z (reserved)
+\===========================================================================================================
+
+
+\===========================================================================================================
+\  \  SHOW POSITIONS
+\  1 = Session Time
+\  2 = Trial Number
+\  3 = Response Count
+\  4 = Sucrose CHoices
+\  4 = Pellet Choices
+\  7 = Left Lever Count
+\  8 = Right Lever Count
+\  9 = OpOut NUmber
+\  10= Time Elapsed in ITI
+\  11= ITI Target
+\===========================================================================================================
+
+
+
+
+\======================================================
+\ MATLAB standardized codes
+\ *** = used in this program
+
+^Feed1 = 0021
+^Feed2 = 0022
+^Feed3 = 0023
+^Feed4 = 0024
+^DipOn = 0025   \***
+^DipOff = 0026   \***
+^LLeverOn = 0027 \***
+^RLeverOn= 0028  \***
+^LLeverOff = 0029 \***
+^RLeverOff = 0030 \***
+^LightOff1 = 0031
+^LightOff2 = 0032
+^LightOff3 = 0033
+^LightOff4 = 0034
+^LightOn1 = 0041   
+^LightOn2 = 0042
+^LightOn3 = 0043
+^LightOn4 = 0044
+^ToneOff1 = 0051\***
+^ToneOff2 = 0052
+^ToneOff3 = 0053
+^ToneOff4 = 0054
+^ToneOn1 = 0061\***
+^ToneOn2 = 0062
+^ToneOn3 = 0063
+^ToneOn4 = 0064
+^WNoiseOff1 = 0071
+^WNoiseOff2 = 0072
+^WNoiseOff3 = 0073
+^WNoiseOff4 = 0074
+^WNoiseOn1 = 0081
+^WNoiseOn2 = 0082
+^WNoiseOn3 = 0083
+^WNoiseOn4 = 0084
+
+^StartTrial = 0111\***
+^EndTrial = 0112\***
+^StartSession = 0113  \***
+^EndSession = 0114   \***
+^HouseLightOff = 0115
+^HouseLightOn = 0116
+^OnFan = 0117\***
+^OffFan = 0118\***
+^StartIti = 0121\***
+^EndIti = 0122\***
+^LightOffStan = 0201
+^LightOnStan = 0202
+^LightOffComp = 0203
+^LightOnComp = 0204
+^LightOffCtrl = 0205
+^LightOnCtrl = 0206
+^FeedStan = 0207
+^FeedComp = 0208
+^StartStanFlash = 0209
+^StopStanFlash = 0211
+^StartCompFlash = 0212
+^StopCompFlash = 0213
+^STNonGapNonProbe = 0214
+^STNonGapProbe = 0215
+^STGapNonProbe = 0216
+^STGapProbe = 0217
+
+^ProbeTrial = 0221
+^AutoTrial = 0222
+
+^PokeOff1 = 1001
+^PokeOff2 = 1002
+^PokeOff3 = 1003
+^PokeOff4 = 1004
+^PokeOn1 = 1011
+^PokeOn2 = 1012
+^PokeOn3 = 1013
+^PokeOn4 = 1014
+^LLeverDown = 1015    \***
+^RLeverDown = 1016    \***
+^LLeverUp = 1017        \***
+^RLeverUp = 1018        \***
+^PokeOffStan = 1301
+^PokeOnStan = 1302
+^PokeOffComp = 1303
+^PokeOnComp = 1304
+^PokeOffCtrl = 1305
+^PokeOnCtrl = 1306   
+                       
+
+^FeederLightOn = 0101  \***
+^FeederLightOff = 0102  \***
+
+
+^ForcedTrial = 3300
+^ChoiceTrial = 3301
+                             
+^PelletTrial = 3320
+^SucroseTrial = 3321
+
+^Pelletchoice = 0100\code for hold choice
+^Sucrosechoice = 0101\code for press choice
+^ForcedOpOut = 03330\opting out of forced trial
+
+\====================================================================
+
+
+\Dimensionalize Event and Time code array
+dim w=10000
+dim m = 2  
+               
+list a = 0,0
+list b = 0,0
+list h = 1,2
+list s = 0,0 
+\ITI duration list (in hundredths of a second)
+list u = 523, 576, 630, 685, 743, 801, 862, 924, 989, 1056, 1125, 1196, 1270, 1347, 1427, 1510, 1597, 1688, 1783, 1883, 1989, 2100, 2218, 2343, 2476, 2619, 2773, 2940, 3122, 3322, 3545, 3795, 4082, 4417, 4819, 5325, 6004 \20 Seconds
+
+
+\=====================================================================
+\   Z-PULSES USED IN THIS PROGRAM
+\ z1 = Left Lever Extended
+\ z2 = Right Lever Extended
+\ z3 = Left Lever Retracted (Reinforcement)
+\ z4 = Right Lever Retracted (Reinforcement)
+\ z5 = Shut Down EVERYTHING
+\ z6 = Left Lever Begin Counting Time
+\ z7 = Left Lever Stop Counting Time
+\ z8 = Right Lever Begin Counting Time
+\ z9 = Right Lever Stop Counting Time                          
+\ z10= Trial Start Contingency Reset
+\ z11= Beep!
+\ Z12= Offside Right Lever Begin Counting Time
+\ Z13= Offside Right Lever Stop Counting Time
+\ Z14= Offside Left Lever Begin Counting Time
+\ Z15= Offside Left Lever Stop Counting Time
+\ z16= Tiggers OpOut of Forced Trial
+\=======================================================================
+
+
+
+\=======================================================================
+
+\======= State Set 1 : Setting variables and display screen ============
+
+S.S.1,    \===MATLAB TIMER "T"===
+s1,     
+    #start: set p = -1;
+    ~initANL926;~;~SetRack (MG, 1);~;
+            ~SetAmp (MG,BOX, 90);~;
+            ~SetRF (MG,BOX, 10);~;~SetFreq (MG,BOX, 2500);~;
+    set y = 40;       \Sets the PELLET LEVER - left lever ratio
+    set k = 5;        \Sets the SUCROSE - right lever ratio 
+    set d = 0;         \Counts the number of forced trials 
+    set o = 0;        \Counts the number of opt outs   
+    set e = 0;        \Counts number of Pellet Choices
+    set l = 0;        \Counts number of Sucrose Choices
+          
+       --->s2                
+                      
+
+S2,        \=====update Matlab clock, display====
+    0.01": set T = T + 100000;        \Keeps time in 100th of a second
+    set r = r+0.01;
+        SHOW 1,SessionTime,r;
+        SHOW 2,Trials,j;
+        SHOW 3,Resp,s(0)+s(1);
+        SHOW 4,SucroseNum,l;
+        SHOW 5,PelletNum,e;
+        Show 7,LLever,s(0);
+        Show 8,RLever,s(1);
+        Show 9,OptOuts,o;
+        Show 10,ITI Time,f;
+    if g = 1 [@leftlever, @rightlever]    \This determines which lever is the Pellet lever
+                @leftlever: Show 7,LLever**,s(0);
+                Show 8,RLever,s(1); --->sx
+                @rightlever: Show 7,LLever,s(0);
+                Show 8,RLever**,s(1); --->sx  
+
+\=======================================================================
+\=====State Set 2: Turning on Fan and Defining Max Session Length=======
+
+S.S.2,    \===INITIALIZE===
+S1,        
+    #start: ON^fan;
+        add p; set w(p)= ^OnFan + T; ---> s2
+
+S2,        \=====wait 1 hours====
+    60': z5;                    \Times session out after 1 hour
+        --->sx
+
+\=======================================================================
+\==== State Set 3: Trial, ITI, Forced, and CHoice Trial Controller======
+
+S.S.3,    \===TRIAL AND ITI GENERATOR===
+S1,        
+    #start:  randd x = u;
+        set i = 0;
+        add p; set w(p)= ^StartSession + T;
+        --->s2
+
+S2,        \=====iti====
+    .01": add f; 
+        if f >= x [@over, @notover]                \Check if ITI over
+            @over: z10;
+            add p; set w(p) = ^EndIti + T;
+                --->s3
+            @notover: --->sx
+
+S3,        \=====Where is session (Forced or Free) Evaluator=====
+    0": add p; set w(p) = ^StartTrial + T;
+        ON^house; add p; set w(p)= ^HouseLightOn + T;               
+    	set d = d+1; --->s4
+
+
+\===== - - (Forced Choice Trials) - - =====
+
+s4,
+    0": if d <= 10 [@Forced, @Choice]
+       @Forced: add p; set w(p) = ^ForcedTrial + T;
+          randd g = h; 
+              if g = 1 [@leftlever, @rightlever]
+                  @leftlever: ON1; add p; set w(p) = ^LLeverOn + T; z1;
+                  add p; set w(p) = ^PelletTrial + T;
+          --->s5
+                  @rightlever: ON2; add p; set w(p) = ^RLeverOn + T; z2;
+                  add p; set w(p) = ^SucroseTrial + T;  
+          --->s6
+       @Choice: add p; set w(p) = ^ChoiceTrial + T; --->s9 
+S5,        \=====left lever holding pattern=====
+    #Z3: add p; set w(p) = ^EndTrial + T;
+        OFF^house;
+        add p; set w(p) = ^HouseLightOff + T;
+        add j;
+        --->s15
+    #z16: ---> s14
+
+s6,        \=====right lever holding pattern=====
+    #Z4: add p; set w(p) = ^EndTrial + T;
+        OFF^house;               
+        add p; set w(p) = ^HouseLightOff + T;
+        add j;
+        --->s7
+    #z16: ---> s14
+
+
+\=============== Reinforcing the Sucrose Outcome ===================================================
+S7,        \=====rein start=====
+    0": ON^dipper; ON^FeederLight; add p; set w(p) = ^FeederLightOn + T; 
+        add p; set w(p) = ^DipOn + T; z11; 
+        --->s8
+
+S8,        \=====rein wait=====
+    4.5": OFF^dipper;OFF^FeederLight;
+        add p; set w(p) = ^DipOff + T;
+        add p; set w(p) = ^FeederLightOff + T;  
+        OFFg;                                
+        add p; set w(p) = ^RLeverOff + T;
+        add p; set w(p) = ^StartIti + T;
+        set k=k*1;             \This is in place to make it easy to make the schedules progressive
+        --->s13
+\====================================================================================================
+
+
+\=============== Reinforcing the Pellet Outcome =====================================================
+s15, 
+   .01":    ON^Pellet; add p;set w(p)=^Feed2 +T; z11;
+            ON^FeederLight; add p; set w(p) = ^FeederLightOn + T;
+            --->s16
+s16,
+    4.5":  OFF^Pellet; 
+           OFF^FeederLight; set w(p) = ^FeederLightOff + T;
+           OFFg; add p; set w(p) = ^LLeverOff + T;
+           add p; set w(p) = ^StartIti + T;
+           set y=y*1;         \This is in place to make it easy to make the schedules progressive
+           --->s13
+\====================================================================================================    
+                                                             
+
+\==================== Fre Choice Trial Code =========================================================
+\=====trial start - - (Free Choice Trials)=====
+
+s9,
+    0": ON1; add p; set w(p) = ^LLeverOn + T; z1;
+        ON2; add p; set w(p) = ^RLeverOn + T; z2;
+                --->s10
+
+S10,        \=====left lever holding pattern=====
+    #Z3: add p; set w(p) = ^EndTrial + T;
+        OFF^house;
+        add p; set w(p) = ^HouseLightOff + T;
+        add j;               
+        --->s17   
+        \=====right lever holding pattern=====
+    #Z4: add p; set w(p) = ^EndTrial + T;
+        OFF^house;
+        add p; set w(p) = ^HouseLightOff + T;
+        add j;
+        --->s11
+
+\================= Choice Trial Sucrose Reinforcement
+
+S11,        \=====rein start=====
+    0": ON^dipper; ON^FeederLight;
+    add l; SHOW 4,SucroseNum,l;
+        add p; set w(p) = ^DipOn + T;
+    z11;
+        --->s12
+
+S12,        \=====rein wait=====
+    4.5": OFF^dipper; OFF^FeederLight;
+        add p; set w(p) = ^DipOff + T;
+        OFF1; OFF2;                                
+        add p; set w(p) = ^LLeverOff + T;
+        add p; set w(p) = ^RLeverOff + T;
+        add p; set w(p) = ^StartIti + T;                       
+        --->s13
+
+\============================================================================               
+
+\================= Choice Trial Pellet Reinforcement =========================
+s17, \===============Pellet Reinforcement ====================
+   .01":    ON^Pellet; add p; set w(p)= ^Feed2 + T; z11; 
+            add e; SHOW 5, PelletNum, e; ON^FeederLight ---> s18
+    
+s18,
+  4.5":  OFF^Pellet;   
+         OFF^FeederLight; set w(p) = ^FeederLightOff + T;  
+         OFF1; OFF2;                                
+         add p; set w(p) = ^LLeverOff + T;
+         add p; set w(p) = ^RLeverOff + T;
+         add p; set w(p) = ^StartIti + T;
+    --->s13
+\=============================================================================
+
+\=============Session End Evaluator--Convergence point======================
+S13,        \=====check for session end=====
+    0": if j = 30 [@over, @notover]
+            @over: z5;
+                --->sx
+            @notover: set f = 0;
+            set y=y*1; set k=k*1;
+        set i = 0; set n = 0;
+        randd x = u;
+        SHOW 4,ITI,x; --->s2   
+
+\============================================================================ 
+
+s14,\========Forced Choice Opt Out ===================
+    0": randd x = u;
+        SHOW 4,ITI,x; 
+    add p; set w(p) = ^StartIti + T;
+        set y=y*1;set n=0; --->s2   
+
+
+
+
+
+        
+\===================================================================
+\=========== State Set 4: Left lever sumation Processor ============
+
+S.S.4,    \===LEVER SUMMATION - - For left lever only ===
+S1,        \=====initialization====
+    #start: --->s2
+
+S2,        \=====wait for z-pulse====
+    #Z1: set a(0) = 0;
+        --->s3
+
+S3,        \=====left lever-down processing====
+    #R^LLever2: z6;
+        set c = 1;
+        add a(0);
+        --->sx
+    #R^RLever2: z12;
+        set c = 2;
+        add a(0);
+        --->sx
+    .01": if a(0) > 0 [@press, @nopress]
+            @press: if b(0) = 0 [@leveron, @noleveron]
+                @leveron: set b(0) = 1;
+                    set a(0) = 0; 
+                --->sx
+                @noleveron:  set b(0) = 1;
+                    set a(0) = 0;
+                    --->sx
+            @nopress: if b(0) = 1 [@stop, @nostop]
+                @stop: set b(0) = a(0);
+                    set a(0) = 0;
+                if c = 1 [@left, @right]
+                        @left: z7;
+                        add s(0);
+                               --->sx
+                        @right: z13;
+                        --->sx
+                @nostop:  set b(0) = a(0);
+                    set a(0) = 0;
+                    --->sx
+    #Z3: --->s2
+
+\===================================================================
+
+
+
+\===================================================================
+\=========State Set 11: Right lever sumation Processor =============
+
+S.S.11,    \===LEVER SUMMATION - - For right lever only ===
+S1,        \=====initialization====
+    #start: --->s2
+
+S2,        \=====wait for z-pulse====
+    #Z2: set a(1) = 0;
+        --->s3
+
+S3,        \=====right lever-down processing====
+    #R^RLever2: z8;
+        set c = 2;
+        add a(1);
+        --->sx 
+    #R^LLever2: z14;
+        set c = 1;
+        add a(1);
+        --->sx
+    .01": if a(1) > 0 [@press, @nopress]
+            @press: if b(1) = 0 [@leveron, @noleveron]
+                @leveron: set b(1) = 1;
+                    set a(1) = 0; 
+                    --->sx
+                @noleveron: set b(1) = 1;
+                    set a(1) = 0;
+                    --->sx
+            @nopress: if b(1) = 1 [@stop, @nostop]
+                @stop: set b(1) = a(1);
+                    set a(1) = 0;
+                    if c = 2 [@right, @left]
+                        @right: z9;
+                            add s(1);
+                            --->sx
+                        @left: z15;      
+                            --->sx     
+                @nostop: set b(1) = a(1);
+                    set a(1) = 0;
+                    --->sx
+    #Z4: --->s2
+\===================================================================
+
+
+\===================================================================
+\===== State Set 5: Evaluates - Does left Press get Reinforced?
+
+S.S.5,    \===LEFT LEVER CONTINGENCY EVALUATION===
+S1,        
+    #start: --->s2
+
+S2,        \=====wait for z-pulse to start====
+    #Z6: add i; add p; set w(p) = ^LLeverDown+T;
+        --->s3
+    #Z12: if a(0) = 1 [@leveron, @noleveron]
+        @leveron: --->sx
+        @noleveron: --->sx
+    #Z13: --->sX
+
+S3,        \=====count while waiting for z-pulse to stop====
+    .01": if i >= y [@over, @notover]
+            @over: z3;
+            add s(0);
+            add p; set w(p) = ^Pelletchoice + T;
+        add p; set w(p) = ^LLeverUp + T;
+                --->s4
+            @notover: --->sx
+            #Z7: add p; set w(p) = ^LLeverUp + T; 
+            --->s2
+
+S4,    \====loop back==
+    #Z10: --->s2
+\===================================================================
+
+
+\===================================================================
+\===== State Set 6: Evaluates - Does Right Press get Reinforced?
+
+S.S.6,    \===RIGHT LEVEL CONTINGENCY EVALUATION===
+S1,        
+    #start: --->s2
+
+S2,        \=====wait for z-pulse to start====
+    #Z8: add n; add p; set w(p) = ^RLeverDown+T;
+        --->s3
+    #Z14: if a(1) = 1 [@leveron, @noleveron]
+        @leveron: --->sx
+        @noleveron: --->sx
+    #Z15: --->sX
+
+
+S3,        \=====count while waiting for z-pulse to stop====
+    .01": if n >= k [@over, @notover]                
+            @over: z4;
+                add s(1);               
+            add p; set w(p) = ^Sucrosechoice + T;
+                add p; set w(p) = ^RLeverUp + T;
+                --->s4
+            @notover: --->sx
+    #Z9: add p; set w(p) = ^RLeverUp + T;  
+    --->s2
+                                  
+S4,    \====loop back==
+    #Z10: --->s2
+\===================================================================
+
+
+
+
+
+
+\===================================================================
+\====State Set 7: Ends the session and shuts everything down========
+
+S.S.7,    \===SESSION ENDER===
+S1,        
+    #start: --->s2
+
+S2,        \=====wait for z-pulse====
+    #Z5: --->s3
+
+S3,        \=====shut down everything====
+    0": OFF^house;
+        add p; set w(p) = ^HouseLightOff + T;
+        OFF^fan; ~ToneOff(MG,Box);~;     
+        add p; set w(p) = ^OffFan + T;
+        add p; set w(p)= ^EndSession + T;
+        add p; set w(p)=-987.987;
+        --->stopabortflush
+\===================================================================
+
+
+
+\===================================================================
+\=====State Set 8: Controls the post Reinforcer Beep ===============
+S.S.8,    \===BEEP!===
+S1,        \=====initialization====
+    #start: --->s2
+
+S2,        \=====wait for z-pulse====
+    #Z11: ~ondur (MG,BOX, 200);~;
+    add p; set w(p) = ^ToneOn1 + T;
+    --->s3
+
+S3,        \=====tone ender====
+    0.5": ~ToneOff(MG,Box);~;
+    add p; set w(p) = ^ToneOff1 + T;
+    --->s2
+\===================================================================
+
+
+
+\===================================================================
+\===== State Set 9: End the session if the mouse has quit===========
+s.s.9, \End session after 15' without lever press
+s1,                    \Added this to end the session after 15 minutes without a lever press
+    #start: --->s2
+s2,
+    #z6:--->s3
+    #z8:--->s3
+s3,
+    #z6:--->s3
+    #z8:--->s3
+    60': z5 --->s1        
+\====================================================================
+   
+    
+
+\====================================================================
+\=====State Set 10: Head Entry Detector Module ======================
+S.S.10,  \Head Entry (Input 3) COUNTER
+S1,
+  
+     #START:SHOW 11,HeadIn,0--->S2     
+
+S2,
+   
+      #R^headIN: SHOW 11,HeadIn,1; add p; set w(p) = ^PokeOn1 + T---> sx
+      #R^headOUT: SHOW 11,HeadIn,0; add p; set w(p) = ^PokeOff1 + T--->sx   
+\====================================================================
+
+
+\====================================================================
+\==== State Set 12: COntrols the opt out timer in forced trials======
+
+s.s.12,        \=======Forced Trial Opt Out Evaluator=======\
+
+s1,                    
+    #start: --->s2
+s2,
+    #z1:--->s3        \When either the left or right lever gets extended
+    #z2:--->s3
+
+s3, 
+    0.5":if d <= 10[@CanOptOut, @Cant]    \If still in forced trials
+    @CanOptOut: --->s4
+    @Cant: ---> sx
+
+s4,
+    #z3: ---> s3
+    #z4: ---> s3
+    5': OFF1; OFF2;set o = o+1; add j;
+    add p; set w(p) = ^ForcedOpOut + T;    \If 5 minutes without a press
+    add p; set w(p) = ^LLeverOff + T;
+        add p; set w(p) = ^RLeverOff + T;
+       z16;    --->s2
+\====================================================================
+
+
+
+
+
+
+
+
+          
